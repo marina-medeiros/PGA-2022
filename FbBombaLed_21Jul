@@ -38,18 +38,17 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   int ButtonState = digitalRead(Button);
-  int evSubida = Firebase.getInt("evSubida"); //0 = fechada; 1 = aberta
-  int evDescida = Firebase.getInt("evDescida");
+  int evSubida = Firebase.getInt("/valvulas/evSubida"); //0 = fechada; 1 = aberta
+  int evDescida = Firebase.getInt("/valvulas/evDescida"); // não influencia nesse caso :P
   
-  if(ButtonState == HIGH && evSubida == 1){
-    digitalWrite(led1, HIGH);
-  }
   if(evSubida == 1){
     if(ButtonState == HIGH){
     digitalWrite(led1, HIGH);
+    Firebase.setInt("/bomba/estado", 1);
     }
     else{
     digitalWrite(led1,LOW);
+    Firebase.setInt("/bomba/estado", 0);
     }
   }
   if(evSubida == 0 && ButtonState == HIGH){
